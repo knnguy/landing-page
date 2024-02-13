@@ -865,7 +865,8 @@
     async function handleLogInClick() {
       // Check if user is authenticated
       lock.checkSession({
-        redirect_uri: redirectUrl
+        redirect_uri: redirectUrl,
+        responseType: "token id_token",
       }, function (err, authResult) {
       console.log('authResults', authResult)
       if (err) {
