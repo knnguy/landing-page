@@ -85,10 +85,10 @@
           </ul>
         </div>
         <div class="nav__login-container">
-          <a href="#" class="nav__login" onclick="handleLoginSignupButtonClick('Log In')">Log in</a>
+          <a href="#" class="nav__login" onclick="handleLogInClick('Log In')">Log in</a>
         </div>
         <div class="nav__contact-box">
-          <a href="#" class="nav__contact-link" onclick="handleLoginSignupButtonClick('Sign Up')">
+          <a href="#" class="nav__contact-link" onclick="handleSignUpClick('Sign Up')">
             Sign Up
           </a>
           <a href="#" class="nav__mobile-btn" aria-label="Open" onclick="toggleMobileMenu()"></a>
@@ -106,7 +106,7 @@
             <a href="https://www.rackspace.com/industry" class="nav__mega-mbl--link">Industries</a>
           </li>
           <li class="nav__mega-mbl--item">
-            <a href="#" class="nav__mega-mbl--link" onclick="handleLoginSignupButtonClick('Sign Up')">Sign Up</a>
+            <a href="#" class="nav__mega-mbl--link" onclick="handleSignUpClick('Sign Up')">Sign Up</a>
           </li>
         </ul>
       </div>
@@ -126,7 +126,7 @@
           <div class="hero-box">
             <h3>Bid from $0.001/hr</h3>
             <div class="box-description"><a class="box-button" href="#"
-                onclick="handleLoginSignupButtonClick('Get Started')">Get started with Rackspace Spot</a></div>
+                onclick="handleSignUpClick('Get Started')">Get started with Rackspace Spot</a></div>
           </div>
         </div>
       </div>
@@ -862,36 +862,25 @@
       setActiveCopy(type)
     }
 
+    async function handleLogInClick() {
+      // Check if user is authenticated
+      lock.checkSession({
+        redirect_uri: redirectUrl
+      }, function (err, authResult) {
+      console.log('authResults', authResult)
+      if (err) {
+        console.log('error',err)
+        lock.show()
+      }
+    });
+    }
+
     // Declare the function as async
-    async function handleLoginSignupButtonClick(source) {
-      const eventName = source === "Log In" ? "Log In" : "Sign Up";
+    async function handleSignUpClick(source) {
+      const eventName = source;
       gtag("event", `Clicked ${eventName} button`, {});
       amplitude.track(`Clicked ${eventName} button`);
-
-      const initialScreen = source === "Log In" ? "login" : "signUp";
-
-      // Check session with SPA SDK
-      const isAuthenticated = await auth0Client.isAuthenticated();
-      console.log("auth0 client is authenticated", isAuthenticated);
-
-      if (isAuthenticated) {
-        // If the user is already authenticated, you might want to perform some action here
-        return;
-      } else {
-        console.log("not authenticated", auth0Client);
-        // You can show the lock screen here or perform other actions for unauthenticated users
-      }
-
-      try {
-        const result = await auth0Client.getTokenSilently();
-        console.log('get token silently', result)
-      } catch (error) {
-        if (error.error !== 'login_required') {
-          throw error;
-        }
-      }
-
-      lock.show({ initialScreen });
+      lock.show({ initialScreen: "signUp" });
     }
 
 
@@ -1004,26 +993,6 @@
         }
       }, 1)
     })
-
-    lock.on("authenticated", function (authResult) {
-      lock.getUserInfo(authResult.accessToken, function (error, profile) {
-        if (error) {
-          console.log("error")
-          return
-        }
-
-        // Save the token and profile information in local storage or a global variable
-        console.log("authenticated lock on")
-      })
-    })
-
-    lock.checkSession({}, function (err, authResult) {
-      console.log('authResults', authResult)
-      if (err) {
-        console.log('error',err)
-      }
-    });
-
   </script>
 </body>
 
