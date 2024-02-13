@@ -137,6 +137,16 @@ function handleLoginSignupButtonClick(source) {
 
   const initialScreen = source === "Log In" ? "login" : "signUp"
 
+  // Check session with SPA SDK
+  auth0Client.isAuthenticated().then(function (isAuthenticated) {
+    console.log("auth0 client is authenticated", isAuthenticated)
+    if (isAuthenticated) {
+      return
+    } else {
+      console.log("not authenticated", auth0Client)
+    }
+  })
+
   lock.show({ initialScreen })
 }
 
