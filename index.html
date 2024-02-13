@@ -124,7 +124,8 @@
         <div class="hero-box-container">
           <div class="hero-box">
             <h3>Bid from $0.001/hr</h3>
-            <div class="box-description"><a class="box-button" href="#" onclick="handleLogInClick('Get Started with Rackspace Spot')">Get
+            <div class="box-description"><a class="box-button" href="#"
+                onclick="handleLogInClick('Get Started with Rackspace Spot')">Get
                 started with Rackspace Spot</a></div>
           </div>
         </div>
@@ -872,7 +873,7 @@
         console.log('authResults', authResult)
         if (err) {
           console.log('error', err)
-          lock.show({ initialScreen: source === 'Log In' ? "login" : "signUp"})
+          lock.show({ initialScreen: source === 'Log In' ? "login" : "signUp" })
         }
         else {
           setTimeout(function () {
@@ -948,9 +949,28 @@
 
   </script>
   <script>
-    const clientId = "WouQOQULCNjzNGqdUuIdcy0kgz4up7Nb"
-    const domain = "dev-o64lsn21gx2ybdkn.us.auth0.com"
-    const redirectUrl = `https://supreeth-ngpc-dev.platform9.horse/ui`
+    let clientId = null
+    let domain = null
+    let redirectUrl = `https://${window.location.host}/ui`
+
+    async function getClientId() {
+      const url = `https://${window.location.host}/apis/auth.ngpc.rxt.io/v1/clients`
+      try {
+        const response = await fetch(url)
+        const clients = await response.json()
+        const uiClient = (clients || []).find((c) => c.name === 'NGPC UI')
+        console.log('clients', clients)
+        console.log('uiClient', uiClient)
+        if (uiClient) {
+          clientId = uiClient.clientId
+          domain = uiClient.domain
+          console.log({ clientId, domain})
+        }
+      }
+      catch (err) {
+        console.log("Error fetching clients", err)
+      }
+    }
 
     const options = {
       auth: {
