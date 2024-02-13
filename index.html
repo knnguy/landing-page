@@ -55,7 +55,6 @@
   <link href="static-files/fontawesome/css/solid.min.css" rel="stylesheet">
   <link href="static-files/fontawesome/css/regular.min.css" rel="stylesheet">
   <script src="https://cdn.auth0.com/js/lock/12.4.0/lock.min.js"></script>
-  <script src="https://cdn.auth0.com/js/auth0-spa-js/1.13/auth0-spa-js.production.js"></script>
 </head>
 
 <body>
@@ -125,8 +124,8 @@
         <div class="hero-box-container">
           <div class="hero-box">
             <h3>Bid from $0.001/hr</h3>
-            <div class="box-description"><a class="box-button" href="#"
-                onclick="handleSignUpClick('Get Started')">Get started with Rackspace Spot</a></div>
+            <div class="box-description"><a class="box-button" href="#" onclick="handleLogInClick('Get Started with Rackspace Spot')">Get
+                started with Rackspace Spot</a></div>
           </div>
         </div>
       </div>
@@ -862,31 +861,31 @@
       setActiveCopy(type)
     }
 
-    async function handleLogInClick() {
-      // Check if user is authenticated
+    function handleLogInClick(source) {
+      gtag("event", `Clicked ${source} button`, {});
+      amplitude.track(`Clicked ${source} button`);
+
       lock.checkSession({
         redirect_uri: redirectUrl,
         responseType: "token id_token",
       }, function (err, authResult) {
-      console.log('authResults', authResult)
-      if (err) {
-        console.log('error',err)
-        lock.show()
-      }
-      else {
-        setTimeout(function () {
-          window.location.href = '/ui'
-      }, 30000)    
-      }
-    });
+        console.log('authResults', authResult)
+        if (err) {
+          console.log('error', err)
+          lock.show({ initialScreen: source === 'Log In' ? "login" : "signUp"})
+        }
+        else {
+          setTimeout(function () {
+            window.location.href = '/ui'
+          }, 10000)
+        }
+      })
     }
 
-    // Declare the function as async
-    async function handleSignUpClick(source) {
-      const eventName = source;
-      gtag("event", `Clicked ${eventName} button`, {});
-      amplitude.track(`Clicked ${eventName} button`);
-      lock.show({ initialScreen: "signUp" });
+    function handleSignUpClick() {
+      gtag("event", "Clicked Sign Up button", {});
+      amplitude.track("Clicked Sign Up button");
+      lock.show({ allowLogin: false });
     }
 
 
@@ -973,20 +972,6 @@
     }
 
     const lock = new Auth0Lock(clientId, domain, options)
-
-    // const auth0 = new Auth0Client({
-    //   domain,
-    //   clientId,
-    // })
-
-    var auth0Client = null
-
-    createAuth0Client({
-      domain,
-      clientId,
-    }).then((auth0) => {
-      auth0Client = auth0
-    })
 
     // Adjust the height of the Auth0 Lock widget
     lock.on("show", function () {
