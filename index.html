@@ -983,12 +983,14 @@
       }
     }
 
+    let lock = null
+
     getClientInfo().then(({ clientId, domain }) => {
       if (clientId === undefined || domain === undefined) {
         console.log("Unable to initialize Lock. ClientId or Domain is not valid")
         return
       }
-      const lock = new Auth0Lock(clientId, domain, options)
+      lock = new Auth0Lock(clientId, domain, options)
       // Adjust the height of the Auth0 Lock widget
       lock.on("show", function () {
         // Wait for the next tick to ensure the DOM has updated
