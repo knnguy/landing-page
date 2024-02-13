@@ -985,7 +985,7 @@
 
     let lock = null
 
-    getClientInfo().then(({ clientId, domain }) => {
+    getClientInfo().then(({ client_id, domain }) => {
       if (clientId === undefined || domain === undefined) {
         console.log("Unable to initialize Lock. ClientId or Domain is not valid")
         return
