@@ -874,7 +874,9 @@
         lock.show()
       }
       else {
-        window.location.href = '/ui'
+        setTimeout(function () {
+          window.location.href = '/ui'
+      }, 30000)    
       }
     });
     }
