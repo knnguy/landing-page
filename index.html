@@ -949,19 +949,6 @@
 
   </script>
   <script>
-    async function getClientInfo() {
-      const url = `https://${window.location.host}/apis/auth.ngpc.rxt.io/v1/clients`
-      try {
-        const response = await fetch(url)
-        const clients = await response.json()
-        const uiClient = (clients || []).find((c) => c.name === 'NGPC UI')
-        return uiClient || {}
-      }
-      catch (err) {
-        console.log("Error fetching clients", err)
-      }
-    }
-
     let redirectUrl = `https://${window.location.host}/ui`
 
     const options = {
@@ -983,19 +970,36 @@
       allowShowPassword: true,
     }
 
-    const {domain, clientId} = await getClientInfo()
-    const lock = new Auth0Lock(clientId, domain, options)
+    async function getClientInfo() {
+      const url = `https://${window.location.host}/apis/auth.ngpc.rxt.io/v1/clients`
+      try {
+        const response = await fetch(url)
+        const clients = await response.json()
+        const uiClient = (clients || []).find((c) => c.name === 'NGPC UI')
+        return uiClient || {}
+      }
+      catch (err) {
+        console.log("Error fetching clients", err)
+      }
+    }
 
-    // Adjust the height of the Auth0 Lock widget
-    lock.on("show", function () {
-      // Wait for the next tick to ensure the DOM has updated
-      setTimeout(function () {
-        const lockWidget = document.querySelector(".auth0-lock-widget")
-        if (lockWidget) {
-          lockWidget.style.height = "max-content"
-          lockWidget.style.width = "350px"
-        }
-      }, 1)
+    getClientInfo().then(({ clientId, domain }) => {
+      if (clientId === undefined || domain === undefined) {
+        console.log("Unable to initialize Lock. ClientId or Domain is not valid")
+        return
+      }
+      const lock = new Auth0Lock(clientId, domain, options)
+      // Adjust the height of the Auth0 Lock widget
+      lock.on("show", function () {
+        // Wait for the next tick to ensure the DOM has updated
+        setTimeout(function () {
+          const lockWidget = document.querySelector(".auth0-lock-widget")
+          if (lockWidget) {
+            lockWidget.style.height = "max-content"
+            lockWidget.style.width = "350px"
+          }
+        }, 1)
+      })
     })
   </script>
   <script src="js/auth0-lock.js"></script>
