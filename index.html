@@ -794,25 +794,38 @@ function togglePriceChart(type) {
   setActiveCopy(type)
 }
 
-function handleLoginSignupButtonClick(source) {
-  const eventName = source === "Log In" ? "Log In" : "Sign Up"
-  gtag("event", `Clicked ${eventName} button`, {})
-  amplitude.track(`Clicked ${eventName} button`)
+// Declare the function as async
+async function handleLoginSignupButtonClick(source) {
+  const eventName = source === "Log In" ? "Log In" : "Sign Up";
+  gtag("event", `Clicked ${eventName} button`, {});
+  amplitude.track(`Clicked ${eventName} button`);
 
-  const initialScreen = source === "Log In" ? "login" : "signUp"
+  const initialScreen = source === "Log In" ? "login" : "signUp";
 
   // Check session with SPA SDK
-  auth0Client.isAuthenticated().then(function (isAuthenticated) {
-    console.log("auth0 client is authenticated", isAuthenticated)
-    if (isAuthenticated) {
-      return
-    } else {
-      console.log("not authenticated", auth0Client)
-    }
-  })
+  const isAuthenticated = await auth0Client.isAuthenticated();
+  console.log("auth0 client is authenticated", isAuthenticated);
 
-  lock.show({ initialScreen })
+  if (isAuthenticated) {
+    // If the user is already authenticated, you might want to perform some action here
+    return;
+  } else {
+    console.log("not authenticated", auth0Client);
+    // You can show the lock screen here or perform other actions for unauthenticated users
+  }
+
+  try {
+    const result = await auth0.getTokenSilently();
+    console.log('get token silently', result)
+  } catch (error) {
+    if (error.error !== 'login_required') {
+      throw error;
+    }
+  }
+
+  lock.show({ initialScreen });
 }
+
 
 function trackEvent(name) {
   amplitude.track(name)
