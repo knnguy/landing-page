@@ -5,6 +5,7 @@ const redirectUrl = `https://supreeth-ngpc-dev.platform9.horse/ui`
 const options = {
   auth: {
     redirectUrl,
+    responseType: "token",
   },
   theme: {
     logo: "https://spot.rackspace.com/static-files/spot-logo-transparent.png",
