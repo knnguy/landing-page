@@ -949,28 +949,20 @@
 
   </script>
   <script>
-    let clientId = null
-    let domain = null
-    let redirectUrl = `https://${window.location.host}/ui`
-
-    async function getClientId() {
+    async function getClientInfo() {
       const url = `https://${window.location.host}/apis/auth.ngpc.rxt.io/v1/clients`
       try {
         const response = await fetch(url)
         const clients = await response.json()
         const uiClient = (clients || []).find((c) => c.name === 'NGPC UI')
-        console.log('clients', clients)
-        console.log('uiClient', uiClient)
-        if (uiClient) {
-          clientId = uiClient.clientId
-          domain = uiClient.domain
-          console.log({ clientId, domain})
-        }
+        return uiClient || {}
       }
       catch (err) {
         console.log("Error fetching clients", err)
       }
     }
+
+    let redirectUrl = `https://${window.location.host}/ui`
 
     const options = {
       auth: {
@@ -991,6 +983,7 @@
       allowShowPassword: true,
     }
 
+    const {domain, clientId} = await getClientInfo()
     const lock = new Auth0Lock(clientId, domain, options)
 
     // Adjust the height of the Auth0 Lock widget
