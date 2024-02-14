@@ -997,9 +997,19 @@
       visualElement.src = imagePath
     }
 
+    lock.checkSession({
+        redirect_uri: redirectUrl,
+        responseType: "token id_token",
+      }, function (err, authResult) {
+        if (err) {
+          console.log(err)
+        }
+        else {
+          console.log(authResult)
+        }
+      })
+
   </script>
-  <script src="js/auth0-lock.js"></script>
-  <script src="js/main.js"></script>
 </body>
 
 </html>
