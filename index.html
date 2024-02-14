@@ -781,6 +781,17 @@
           }
         }, 1)
       })
+      lock.checkSession({
+        redirect_uri: redirectUrl,
+        responseType: "token id_token",
+      }, function (err, authResult) {
+        if (err) {
+          lock.show({ initialScreen: source === 'Log In' ? "login" : "signUp" })
+        }
+        else {
+          window.location.href = '/ui'
+        }
+      })
     });
   </script>
   <script>
@@ -996,20 +1007,6 @@
       const visualElement = document.getElementById("how-it-works-visual")
       visualElement.src = imagePath
     }
-
-    lock.checkSession({
-        redirect_uri: redirectUrl,
-        responseType: "token id_token",
-      }, function (err, authResult) {
-        if (err) {
-          console.log(err)
-        }
-        else {
-          console.log(authResult)
-        }
-      })
-
   </script>
 </body>
-
 </html>
