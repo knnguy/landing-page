@@ -767,7 +767,6 @@
     let lock = null
 
     getClientInfo().then(({ client_id, domain }) => {
-      console.log(client_id, domain);
       if (!client_id || !domain) {
         console.log("Unable to initialize Lock. ClientId or Domain is not valid");
         return;
@@ -927,15 +926,11 @@
         redirect_uri: redirectUrl,
         responseType: "token id_token",
       }, function (err, authResult) {
-        console.log('authResults', authResult)
         if (err) {
-          console.log('error', err)
           lock.show({ initialScreen: source === 'Log In' ? "login" : "signUp" })
         }
         else {
-          setTimeout(function () {
             window.location.href = '/ui'
-          }, 10000)
         }
       })
     }
