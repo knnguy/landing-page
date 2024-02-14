@@ -942,7 +942,9 @@
         responseType: "token id_token",
       }, function (err, authResult) {
         if (!err) {
-          lock.logout()
+          lock.logout({
+            returnTo: redirectUrl
+          })
         }
       })
 
