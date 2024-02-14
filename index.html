@@ -759,7 +759,7 @@
         const response = await fetch(url)
         const clients = await response.json()
         const uiClient = (clients || []).find((c) => c.name === 'NGPC UI')
-        return uiClient || {}
+        return uiClient
       }
       catch (err) {
         console.log("Error fetching clients", err)
@@ -768,7 +768,8 @@
 
     let lock = null
 
-    getClientInfo().then(({ client_id, domain }) => {
+    getClientInfo().then((client = {}) => {
+      const { client_id, domain } = client
       lock = new Auth0Lock(client_id || defaultClientId, domain || defaultDomain, options);
       // Adjust the height of the Auth0 Lock widget
       lock.on("show", function () {
