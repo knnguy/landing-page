@@ -781,17 +781,6 @@
           }
         }, 1)
       })
-      lock.checkSession({
-        redirect_uri: redirectUrl,
-        responseType: "token id_token",
-      }, function (err, authResult) {
-        if (err) {
-          console.log(err)
-        }
-        else {
-          console.log(authResult)
-        }
-      })
     });
   </script>
   <script>
