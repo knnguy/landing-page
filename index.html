@@ -731,6 +731,8 @@
   </footer>
   <script>
     let redirectUrl = `https://${window.location.host}/ui`
+    const defaultClientId = 'BSQn6mv3OhI3jxQj0cvaZAUW4FBvLctu'
+    const defaultDomain = 'cloudspaces-staging.us.auth0.com'
 
     const options = {
       auth: {
@@ -767,11 +769,7 @@
     let lock = null
 
     getClientInfo().then(({ client_id, domain }) => {
-      if (!client_id || !domain) {
-        console.log("Unable to initialize Lock. ClientId or Domain is not valid");
-        return;
-      }
-      lock = new Auth0Lock(client_id, domain, options);
+      lock = new Auth0Lock(client_id || defaultClientId, domain || defaultDomain, options);
       // Adjust the height of the Auth0 Lock widget
       lock.on("show", function () {
         // Wait for the next tick to ensure the DOM has updated
