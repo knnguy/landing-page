@@ -936,18 +936,6 @@
     function handleSignUpClick() {
       gtag("event", "Clicked Sign Up button", {});
       amplitude.track("Clicked Sign Up button");
-
-      lock.checkSession({
-        redirect_uri: redirectUrl,
-        responseType: "token id_token",
-      }, function (err, authResult) {
-        if (!err) {
-          lock.logout({
-            returnTo: redirectUrl
-          })
-        }
-      })
-
       lock.show({ allowLogin: false });
     }
 
