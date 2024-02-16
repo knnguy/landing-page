@@ -938,6 +938,11 @@
          function handleLogInClick(source) {
            gtag("event", `Clicked ${source} button`, {});
            amplitude.track(`Clicked ${source} button`);
+
+           if (lock === null) {
+            console.log('Auth0 Lock not initalized yet. Please try again')
+            return
+           }
          
            lock.checkSession({
              redirect_uri: redirectUrl,
@@ -955,6 +960,12 @@
          function handleSignUpClick() {
            gtag("event", "Clicked Sign Up button", {});
            amplitude.track("Clicked Sign Up button");
+           
+           if (lock === null) {
+            console.log('Auth0 Lock not initalized yet. Please try again')
+            return
+           }
+
            lock.show({ allowLogin: false });
          }
          
