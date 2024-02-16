@@ -54,6 +54,61 @@
       <link href="static-files/fontawesome/css/solid.min.css" rel="stylesheet">
       <link href="static-files/fontawesome/css/regular.min.css" rel="stylesheet">
       <script src="https://cdn.auth0.com/js/lock/12.4.0/lock.min.js"></script>
+      <script>
+         let redirectUrl = `https://${window.location.host}/ui`
+         const defaultClientId = 'mwG3lUMV8KyeMqHe4fJ5Bb3nM1vBvRNa'
+         const defaultDomain = 'cloudspaces.us.auth0.com'
+         
+         const options = {
+           auth: {
+             redirectUrl,
+             responseType: "token",
+           },
+           theme: {
+             logo: "https://spot.rackspace.com/static-files/spot-logo-transparent.png",
+             primaryColor: "#c91508",
+           },
+           languageDictionary: {
+             emailInputPlaceholder: "Email",
+             passwordInputPlaceholder: "Password",
+             forgotPasswordAction: "Forgot Password?",
+             title: "",
+           },
+           usernameStyle: "email",
+           allowShowPassword: true,
+         }
+         
+         async function getClientInfo() {
+           const url = `https://${window.location.host}/apis/auth.ngpc.rxt.io/v1/clients`
+           try {
+             const response = await fetch(url)
+             const clients = await response.json()
+             const uiClient = (clients || []).find((c) => c.name === 'NGPC UI')
+             return uiClient
+           }
+           catch (err) {
+             console.log("Error fetching clients", err)
+           }
+         }
+         
+         let lock = null
+         
+         getClientInfo().then((client = {}) => {
+           const { client_id, domain } = client
+           lock = new Auth0Lock(client_id || defaultClientId, domain || defaultDomain, options);
+           // Adjust the height of the Auth0 Lock widget
+           lock.on("show", function () {
+             // Wait for the next tick to ensure the DOM has updated
+             setTimeout(function () {
+               const lockWidget = document.querySelector(".auth0-lock-widget")
+               if (lockWidget) {
+                 lockWidget.style.height = "max-content"
+                 lockWidget.style.width = "350px"
+               }
+             }, 1)
+           })
+         });
+      </script>
    </head>
    <body>
       <!-- Google Tag Manager (noscript) -->
@@ -747,61 +802,6 @@
             <div class="copyright">© 2024 RACKSPACE TECHNOLOGY</div>
          </div>
       </footer>
-      <script>
-         let redirectUrl = `https://${window.location.host}/ui`
-         const defaultClientId = 'mwG3lUMV8KyeMqHe4fJ5Bb3nM1vBvRNa'
-         const defaultDomain = 'cloudspaces.us.auth0.com'
-         
-         const options = {
-           auth: {
-             redirectUrl,
-             responseType: "token",
-           },
-           theme: {
-             logo: "https://spot.rackspace.com/static-files/spot-logo-transparent.png",
-             primaryColor: "#c91508",
-           },
-           languageDictionary: {
-             emailInputPlaceholder: "Email",
-             passwordInputPlaceholder: "Password",
-             forgotPasswordAction: "Forgot Password?",
-             title: "",
-           },
-           usernameStyle: "email",
-           allowShowPassword: true,
-         }
-         
-         async function getClientInfo() {
-           const url = `https://${window.location.host}/apis/auth.ngpc.rxt.io/v1/clients`
-           try {
-             const response = await fetch(url)
-             const clients = await response.json()
-             const uiClient = (clients || []).find((c) => c.name === 'NGPC UI')
-             return uiClient
-           }
-           catch (err) {
-             console.log("Error fetching clients", err)
-           }
-         }
-         
-         let lock = null
-         
-         getClientInfo().then((client = {}) => {
-           const { client_id, domain } = client
-           lock = new Auth0Lock(client_id || defaultClientId, domain || defaultDomain, options);
-           // Adjust the height of the Auth0 Lock widget
-           lock.on("show", function () {
-             // Wait for the next tick to ensure the DOM has updated
-             setTimeout(function () {
-               const lockWidget = document.querySelector(".auth0-lock-widget")
-               if (lockWidget) {
-                 lockWidget.style.height = "max-content"
-                 lockWidget.style.width = "350px"
-               }
-             }, 1)
-           })
-         });
-      </script>
       <script>
          gtag("event", "Viewed Home Page", {})
          
