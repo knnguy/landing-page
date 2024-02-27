@@ -93,22 +93,6 @@
          }
       }
 
-      async function initializeAuth0WebClient({ client_id, domain }) {
-         if (!client_id || !domain) {
-            console.error('Cannot initialize Auth0 Web Client: client_id or domain not found')
-            return
-         }
-         // Initialize Auth0 client for Rackspace logins and sign ups
-         webAuth = new auth0.WebAuth({ domain: domain, clientID: client_id });
-         // Calculate URL to redirect to
-         rackspaceLoginURL = webAuth.client.buildAuthorizeUrl({
-            clientID: client_id,
-            responseType: 'token',
-            redirectUri: redirectUrl,
-            connection: 'rackspace-preprod',
-         });
-      }
-
       async function initializeAuth0Lock({ client_id, domain }) {
          if (!client_id || !domain) {
             console.error('Cannot initialize Auth0 Lock: client_id or domain not found')
@@ -132,7 +116,6 @@
       function initializeAuth0() {
          getClientInfo().then((client) => {
             initializeAuth0Lock(client)
-            initializeAuth0WebClient(client)
          });
       }
 
