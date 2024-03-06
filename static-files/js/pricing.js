@@ -7687,14 +7687,6 @@ const apiResponse = [
   },
 ]
 
-fetch("/static-files/html/nav.html")
-  .then((response) => response.text())
-  .then((data) => (document.getElementById("nav").innerHTML = data))
-
-fetch("/static-files/html/footer.html")
-  .then((response) => response.text())
-  .then((data) => (document.getElementById("footer").innerHTML = data))
-
 let pricingTableData = []
 let classes = []
 let regions = []
