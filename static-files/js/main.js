@@ -1,3 +1,11 @@
+fetch("/static-files/html/nav.html")
+  .then((response) => response.text())
+  .then((data) => (document.getElementById("nav").innerHTML = data))
+
+fetch("/static-files/html/footer.html")
+  .then((response) => response.text())
+  .then((data) => (document.getElementById("footer").innerHTML = data))
+
 gtag("event", "Viewed Home Page", {})
 
 let lastKnownScrollPosition = 0
