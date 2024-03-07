@@ -7687,6 +7687,8 @@ const apiResponse = [
   },
 ]
 
+gtag("event", "Viewed Pricing Page", {})
+
 let pricingTableData = []
 let classes = []
 let regions = []
@@ -7797,6 +7799,14 @@ initDataTable()
 
 regionSelector.addEventListener("change", function () {
   const selectedRegion = this.value
+  gtag(
+    "event",
+    "Pricing Table - Filtered servers by region:  " + selectedRegion,
+    {}
+  )
+  amplitude.track(
+    "Pricing Table - Filtered servers by region:  " + selectedRegion
+  )
   pricingTable
     .column(2)
     .search(selectedRegion === "all" ? "" : selectedRegion)
@@ -7805,13 +7815,24 @@ regionSelector.addEventListener("change", function () {
 
 classesSelector.addEventListener("change", function () {
   const selectedClass = this.value
+  gtag(
+    "event",
+    "Pricing Table - Filtered servers by class:  " + selectedClass,
+    {}
+  )
+  amplitude.track(
+    "Pricing Table - Filtered servers by class:  " + selectedClass
+  )
   pricingTable
     .column(0)
     .search(selectedClass === "all" ? "" : selectedClass)
     .draw()
 })
+
 pricingPeriodSelector.addEventListener("change", function () {
   const selectedPricePeriod = this.value
+  gtag("event", "Pricing Table - Viewed prices " + selectedPricePeriod, {})
+  amplitude.track("Pricing Table - Viewed prices " + selectedPricePeriod)
   pricingTable.rows().every(function () {
     let row = this.data()
     if (row.currentMarketPrice === "") return
