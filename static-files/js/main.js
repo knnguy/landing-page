@@ -1,12 +1,18 @@
-fetch("/static-files/html/nav.html")
-  .then((response) => response.text())
-  .then((data) => (document.getElementById("nav-placeholder").innerHTML = data))
+function loadHTML(url, id) {
+  fetch(url)
+    .then((response) => response.text())
+    .then((data) => {
+      document.getElementById(id).innerHTML = data
 
-fetch("/static-files/html/footer.html")
-  .then((response) => response.text())
-  .then(
-    (data) => (document.getElementById("footer-placeholder").innerHTML = data)
-  )
+      if (id === "nav-placeholder") {
+        document.getElementById("spotNavbarLogo").href = window.location.origin
+      }
+    })
+    .catch((err) => console.error("Failed to load content: ", err))
+}
+
+loadHTML("/static-files/html/nav.html", "nav-placeholder")
+loadHTML("/static-files/html/footer.html", "footer-placeholder")
 
 function toggleMobileMenu() {
   const mobileMenu = document.getElementById("mobile-menu")
