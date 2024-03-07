@@ -7751,10 +7751,10 @@ function initDataTable() {
     columns: [
       { title: "Class", data: "category" },
       { title: "Type", data: "displayName" },
+      { title: "Region", data: "region" },
       { title: "vCPUs", data: "cpu" },
       { title: "Memory (GB)", data: "memory" },
       { title: "Current Market Price", data: "currentMarketPrice" },
-      { title: "Region", data: "region" },
     ],
     columnDefs: [
       {
@@ -7763,7 +7763,7 @@ function initDataTable() {
         searchable: true,
       },
       {
-        target: 3,
+        target: 4,
         type: "num",
         render: function (data, type, row) {
           if (type === "sort") {
@@ -7773,7 +7773,7 @@ function initDataTable() {
         },
       },
       {
-        target: 4,
+        target: 5,
         type: "num-fmt",
         render: function (data, type, row) {
           if (type === "display") {
@@ -7783,7 +7783,7 @@ function initDataTable() {
         },
       },
     ],
-    order: [[4, "asc"]], // sort data by market price by default
+    order: [[5, "asc"]], // sort data by market price by default
     paging: false,
     ordering: true,
     searching: true,
@@ -7798,7 +7798,7 @@ initDataTable()
 regionSelector.addEventListener("change", function () {
   const selectedRegion = this.value
   pricingTable
-    .column(5)
+    .column(2)
     .search(selectedRegion === "all" ? "" : selectedRegion)
     .draw()
 })
