@@ -55,7 +55,7 @@ h5 {
   max-width: 1920px;
   width: 90%;
   display: grid;
-  grid-template-columns: 140px 1fr max-content 130px;
+  grid-template-columns: 140px 1fr max-content max-content 130px;
   grid-gap: 16px;
   grid-template-rows: auto;
   max-width: 90%;
@@ -131,6 +131,10 @@ h5 {
   text-decoration: none;
   color: rgb(88, 101, 242);
   font-weight: 500;
+}
+
+.nav-discord-link:hover {
+  text-decoration: underline;
 }
 
 .mobile-discord-box {
@@ -804,6 +808,10 @@ h5 {
   }
 
   .nav__contact-link {
+    display: none;
+  }
+
+  .nav-discord-box {
     display: none;
   }
 
