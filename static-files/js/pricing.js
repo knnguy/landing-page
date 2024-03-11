@@ -7779,7 +7779,7 @@ function initDataTable() {
         type: "num-fmt",
         render: function (data, type, row) {
           if (type === "display") {
-            return data + ` ${pricingPeriodSelector.value}`
+            return `<span class="market-price">${data}</span><span class="pricing-period"> / ${pricingPeriodSelector.value}</span>`
           }
           return data
         },

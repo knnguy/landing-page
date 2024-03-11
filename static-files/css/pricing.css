@@ -25,3 +25,12 @@ body {
     display: grid;
     grid-gap: 8px;
 }
+
+.market-price {
+  font-weight: 500;
+  font-size: 22px;
+}
+
+.pricing-period {
+  font-size: 13px;
+}
