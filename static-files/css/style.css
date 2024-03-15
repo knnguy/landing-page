@@ -95,7 +95,7 @@ h5 {
   border-bottom: 2px solid #eb0000;
 }
 
-.nav-discord-list-item:hover {
+.nav-reddit-list-item:hover {
   border-bottom: none;
 }
 
@@ -114,7 +114,7 @@ h5 {
   letter-spacing: 1px;
 }
 
-.nav-discord-box {
+.nav-reddit-box {
   display: grid;
   grid-template-columns: max-content max-content;
   grid-gap: 8px;
@@ -122,22 +122,22 @@ h5 {
   padding-left: 16px;
 }
 
-.discord-img {
-  height: 19px;
-  width: 22px;
+.reddit-logo {
+  width: 30px;
 }
 
-.nav-discord-link {
+.nav-reddit-link {
   text-decoration: none;
-  color: rgb(88, 101, 242);
+  color: #FF4500;
   font-weight: 500;
 }
 
-.nav-discord-link:hover {
-  text-decoration: underline;
+.nav-reddit-link:hover {
+  transform: scale(1.05); /* Slightly larger on hover */
+  color: #D82400;
 }
 
-.mobile-discord-box {
+.mobile-reddit-box {
   display: grid;
   grid-template-columns: max-content max-content;
   grid-gap: 8px;
@@ -811,7 +811,7 @@ h5 {
     display: none;
   }
 
-  .nav-discord-box {
+  .nav-reddit-box {
     display: none;
   }
 
